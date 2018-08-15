@@ -1,0 +1,25 @@
+﻿<Window x:Class="CfxUtilityGUI.CfxManipurateSettingsWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="ChemFinder Utility Setting" Height="432" Width="521"
+    >
+    <Grid Height="381">
+        <Button HorizontalAlignment="Right" Margin="0,0,12,12" Name="buttonOK" Width="75" Click="buttonOK_Click" VerticalAlignment="Bottom" Height="22">OK</Button>
+        <Rectangle Margin="13,15,12,0" Name="rectangle1" Stroke="Black" Height="169" VerticalAlignment="Top" />
+        <Label Height="24" Margin="26,25,105,0" Name="label1" VerticalAlignment="Top">Local Database</Label>
+        <TextBox Height="24" Margin="26,49,0,0" Name="textBox_DbPath" VerticalAlignment="Top" HorizontalAlignment="Left" Width="364" />
+        <Button Height="24" HorizontalAlignment="Right" Margin="0,49,20,0" Name="button_BrowseDbPath" VerticalAlignment="Top" Width="75" Click="button_BrowseDbPath_Click">Browse</Button>
+        <Label Height="24" Margin="26,73,105,0" Name="label2" VerticalAlignment="Top">Mol_ID field</Label>
+        <TextBox Height="24" Margin="26,96,105,0" Name="textBox_MolIDFieldName" VerticalAlignment="Top" />
+        <Label Margin="26,119,105,0" Name="label3" Height="26" VerticalAlignment="Top">Local Code field</Label>
+        <TextBox Margin="26,145,105,0" Name="textBox_LocalCodeFieldName" Height="24" VerticalAlignment="Top" />
+        <Label Margin="26,0,105,161" Name="label4" Height="24" VerticalAlignment="Bottom">Chemical Name field</Label>
+        <TextBox Margin="26,0,105,140" Name="textBox_ChemNameFieldName" Height="24" VerticalAlignment="Bottom" />
+        <Label Height="24" Margin="26,0,105,113" Name="label5" VerticalAlignment="Bottom">Scafford Structure file</Label>
+        <TextBox Height="24" Margin="26,0,105,89" Name="textBox_ScaffordCdxFileName" VerticalAlignment="Bottom" />
+        <Button Height="24" HorizontalAlignment="Right" Margin="0,0,12,87" Name="button_ScaffordCdxFileName" VerticalAlignment="Bottom" Width="75" Click="button_ScaffordCdxFileName_Click">Browse</Button>
+        <Button Height="22" HorizontalAlignment="Right" Margin="0,0,105,12" Name="button_ResetValues" VerticalAlignment="Bottom" Width="75" Click="button_ResetValues_Click">Reset</Button>
+        <CheckBox Height="17" HorizontalAlignment="Left" Margin="28,0,0,61" VerticalAlignment="Bottom" Width="186" Name="checkBoxLoadImage">Read substace image.</CheckBox>
+        <CheckBox Height="17" HorizontalAlignment="Left" Margin="26,0,0,40" Name="checkBoxOverwrite" VerticalAlignment="Bottom" Width="186">Overwrite</CheckBox>
+    </Grid>
+</Window>

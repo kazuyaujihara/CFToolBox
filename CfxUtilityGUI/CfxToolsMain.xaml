@@ -1,0 +1,70 @@
+﻿<Window x:Class="CfxUtilityGUI.CfxToolsMainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="ChemFinder Utility" Loaded="Window_Loaded" Closed="Window_Closed" Closing="Window_Closing">
+    <Grid>
+        <Menu IsMainMenu="True" Height="22" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+            <MenuItem Header="_File" >
+                <MenuItem Header="_Add..." Click="AddFile_Click" />
+                <MenuItem Header="_Open" Click="OpenSelected_Click" />
+                <MenuItem Header="Settings..." Click="SetSettings_Click" />
+                <MenuItem Header="E_xit" Click="Exit_Click" />
+            </MenuItem>
+            <MenuItem Header="_Build" >
+                <MenuItem Header="Create from ..." >
+                    <MenuItem Name="CreateFromCasOnlineItem" Header="CAS ONLINE" Click="CreateFromCasOnlineItem_Click" />
+                    <MenuItem Name="CreateFromSciFinderItems" Header="SciFinder's RTF and SDF" Click="CreateFromSciFinderItem_Click" />
+                    <MenuItem Name="CreateFromLST" Header="List" Click="CreateFromLST_Click" />
+                    <MenuItem Name="CreateFromCFX" Header="ChemFinder" Click="CreateFromCFX_Click" />
+                    <MenuItem Name="CreateFromImage" Header="Image" Click="CreateFromImage_Click" />
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="Append ..." >
+                    <MenuItem Name="AppendFromCasOnlineItem" Header="CAS ONLINE" Click="AppendFromCasOnlineItem_Click" />
+                    <MenuItem Name="AppendFromSciFinderItems" Header="SciFinder's RTF and SDF" Click="AppendFromSciFinderItem_Click" />
+                    <MenuItem Name="AppendFromLST" Header="List" Click="AppendFromLST_Click" />
+                    <MenuItem Name="AppendFromCFX" Header="ChemFinder" Click="AppendFromCFX_Click" />
+                    <MenuItem Name="AppendFromImage" Header="Image" Click="AppendFromImage_Click" />
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="_Manipurate..." >
+                    <MenuItem Name="AssignLocalCodeNumber" Header="Assign Local Nr" Click="AssignLocalCodeNumber_Click" />
+                    <MenuItem Name="GenerateStructureFromName" Header="Generate Structure from Name" Click="GenerateStructureFromName_Click" />
+                    <MenuItem Name="GenerateStructureFromImage" Header="Generate Structure from Image" Click="GenerateStructureFromImage_Click" />
+                    <MenuItem Name="GenerateStructureFromSmiles" Header="Generate Structure from SMILES" Click="GenerateSructureFromSmiles_Click" />
+                    <MenuItem Name="GenerateStructureFromInChi" Header="Generate Structure from InChi" Click="GenerateSructureFromInChi_Click" />
+                    <MenuItem Name="GenerateSmilesFromStructure" Header="Generate SMILES from Structure" Click="GenerateSmiles_Click" />
+                    <MenuItem Name="CleanupStructure" Header="Clean up Structure" Click="CleanupStructure_Click" />
+                    <MenuItem Name="ScaffordStructure" Header="Scafford Structure" Click="ScaffordStructure_Click" />
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="_Task" >
+                <MenuItem Header="_Delete" Click="DeleteSelected_Click" />
+                <MenuItem Header="_Kill" Click="KillSelected_Click" />
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="_About..." Click="HelpAbout_Click">
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+        <ListView Margin="0,22,0,0" Name="MainListView" MouseDoubleClick="OpenSelected_Click" Loaded="MainListView_Loaded" Unloaded="MainListView_Unloaded" >
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Check">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding Path=IsSelected}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=TaskID}" Header="Task ID" Width="100"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=TargetFileName}" Header="Target" Width="200"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Progress}" Header="Progress" Width="200"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+            
+    </Grid>
+    <Window.CommandBindings>
+    </Window.CommandBindings>
+</Window>

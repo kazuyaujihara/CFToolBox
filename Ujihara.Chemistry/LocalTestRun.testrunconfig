@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRunConfiguration name="ローカル テストの実行" id="3e78514d-c45e-4e70-b248-bfb19206bd05" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Description>これは、ローカル テストの実行に対する既定のテストの実行構成です。</Description>
+  <TestTypeSpecific />
+</TestRunConfiguration>

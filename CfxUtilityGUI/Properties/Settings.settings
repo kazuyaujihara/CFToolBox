@@ -1,0 +1,30 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CfxUtilityGUI.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="LocalDbPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="MolIDInLocalDb_FieldName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Mol_ID</Value>
+    </Setting>
+    <Setting Name="LocalCodeInLocalDb_FieldName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ChemName_FieldName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">cas_index_name;Other_Names</Value>
+    </Setting>
+    <Setting Name="ScaffordCdx_FileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Smiles_FieldName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">SMILES</Value>
+    </Setting>
+    <Setting Name="LoadSubstanceImage" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="Overwrite" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
