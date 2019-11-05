@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using Ujihara.Chemistry.MSOffice;
 using DocumentFormat.OpenXml.Packaging;
-using W = DocumentFormat.OpenXml.Wordprocessing;
 using A = DocumentFormat.OpenXml.Drawing;
 
 namespace Ujihara.Chemistry.MergeSF
@@ -77,6 +73,13 @@ namespace Ujihara.Chemistry.MergeSF
         }
 
         public virtual byte[] Bitmap { get; set; }
+
+        internal string _Smiles;
+        public string Smiles
+        {
+            get { return _Smiles; }
+            set { _Smiles = value; }
+        }
 
         internal string _Copyright;
         public string Copyright

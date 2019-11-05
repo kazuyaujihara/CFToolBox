@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
-using ChemFinder = ChemFinder16;
-using MolServer = MolServer16;
+using ChemFinder = ChemFinder19;
+using MolServer = MolServer19;
 
 namespace Ujihara.Chemistry
 {
@@ -61,13 +61,23 @@ namespace Ujihara.Chemistry
         const int DiffLabelAndBox = LeftOfBox - LeftOfLabel - WidthOfLabel;
         const int WidthOfSubForm = LeftOfBox + WidthOfBox;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// "Microsoft.Jet.OLEDB.4.0" supports only 32 bit but ChemFinder supports only Jet database.
+        /// </remarks>
+        public const string DefaultProviderName = "Microsoft.Jet.OLEDB.4.0";
+        public string ProviderName { get; private set; }
+
         public XDocument Document { get; private set; }
 
         public CfxManager()
         {
+            this.ProviderName = DefaultProviderName;
         }
 
-        public static void Create(string path)
+        public void Create(string path)
         {
             var cfxFullPath = Path.GetFullPath(path);
 
@@ -93,7 +103,7 @@ namespace Ujihara.Chemistry
             }
         }
 
-        public static void CreateWithDefault(string path)
+        public void CreateWithDefault(string path)
         {
             var cfxFullPath = Path.GetFullPath(path);
             var cfxDirName = Path.GetDirectoryName(cfxFullPath);
@@ -123,7 +133,7 @@ namespace Ujihara.Chemistry
             var doc = new MolServer.Document();
             try
             {
-                doc.Create(mstFullName, 79);    //max supported mst in ChemFinder 13
+                doc.Create(mstFullName, 80);    //max supported mst in ChemFinder 18
                 doc.Close();
             }
             finally
@@ -132,14 +142,14 @@ namespace Ujihara.Chemistry
             }
         }
 
-        private static void CreateDefaultMdb(string mdbPath)
+        private void CreateDefaultMdb(string mdbPath)
         {
             var mdbFullPath = Path.GetFullPath(mdbPath);
             {
                 var cat = new ADOX.Catalog();
                 try
                 {
-                    cat.Create("Provider=Microsoft.Jet.OLEDB.4.0;"
+                    cat.Create("Provider=" + ProviderName + ";"
                             + "Data Source="
                             + mdbFullPath);
                 }
@@ -152,7 +162,7 @@ namespace Ujihara.Chemistry
             using (var conn = new System.Data.OleDb.OleDbConnection())
             {
                 conn.ConnectionString =
-                     "Provider=Microsoft.Jet.OLEDB.4.0;"
+                     "Provider=" + ProviderName + ";"
                    + "Data Source=" + mdbFullPath;
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
@@ -401,9 +411,15 @@ namespace Ujihara.Chemistry
             }
         }
 
+        /// <summary>
+        /// Mst name. Returns <see langword="null"/> if mst is not specified.
+        /// </summary>
         public string MstName
         {
-            get { return Connections.Attribute(AttributeName_mstname).Value; }
+            get
+            {
+                return Connections.Attribute(AttributeName_mstname)?.Value;
+            }
         }
 
         private XElement RequestConnectionsElement(XElement formParent)

@@ -1,14 +1,14 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using MSWord = Microsoft.Office.Interop.Word;
 using System.Xml;
-using System.IO;
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
-using W = DocumentFormat.OpenXml.Wordprocessing;
 using A = DocumentFormat.OpenXml.Drawing;
+using MSWord = Microsoft.Office.Interop.Word;
+using W = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Ujihara.Chemistry.MSOffice
 {

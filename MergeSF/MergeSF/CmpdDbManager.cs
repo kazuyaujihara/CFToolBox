@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
 using System.Xml.Linq;
 
@@ -88,12 +85,13 @@ namespace Ujihara.Chemistry.MergeSF
         /// <param name="filename">ChemFinder file name (.cfx)</param>
         public static void MakeNew(string filename)
         {
+            var man = new CfxManager();
+
             string cfxFullPath = Path.GetFullPath(filename);
 
-            CfxManager.CreateWithDefault(cfxFullPath);
+            man.CreateWithDefault(cfxFullPath);
             ConstructTemplateMdb(cfxFullPath);
 
-            var man = new CfxManager();
             man.Load(cfxFullPath);
 
             string mdbName = man.DatabaseFileName;
@@ -149,9 +147,10 @@ namespace Ujihara.Chemistry.MergeSF
 
         public static void MakeDocumentBaseForm(string filename, string mdbName, string mstName)
         {
-            string cfxFullPath = Path.GetFullPath(filename);
-            CfxManager.Create(cfxFullPath);
             var man = new CfxManager();
+
+            string cfxFullPath = Path.GetFullPath(filename);
+            man.Create(cfxFullPath);
             man.Load(cfxFullPath);
 
             man.BindDatabase(mdbName, CmpdDbManager.Documents_TableName, man.GetRootForm());

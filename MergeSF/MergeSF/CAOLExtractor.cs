@@ -117,13 +117,9 @@ namespace Ujihara.Chemistry.MergeSF
                         prev = EK.AbstractImage;
                         continue;
                     }
-
-
                 }
             }
         }
-
-
 
         private ReferenceInfo GetReferenceInfo(MSWord.Selection selection, ref int cursor, ref string copyright)
         {

@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using CambridgeSoft.ChemScript16;
-using MolServer = MolServer16;
+using CambridgeSoft.ChemScript19;
+using MolServer = MolServer19;
 using Ujihara.Chemistry.IO;
 using Ujihara.Chemistry.MergeSF;
 
 namespace Ujihara.Chemistry.CfxUtility
 {
     public class Program
-        : IDisposable, IRunnable
+        : IDisposable, IRunnable, IProgressReporter
     {
         static string[] SupportedScaffordExtensions = new[] { ".cdx" };
         static string[] SupportedInputFileExtensions = new[] { ".cfx" };
@@ -316,14 +316,16 @@ namespace Ujihara.Chemistry.CfxUtility
 
             if (GenerateStructureFromInChi)
             {
-                GenerateStructureFromField(cursor, CmpdDbManager.LocalID_FieldName, ChemDraw.CDFormat.kCDFormatInChI);
-                cursor.SetValue(CmpdDbManager.StructureSource_FieldName, CmpdDbManager.StructureSource_InChi);
+                var generated = GenerateStructureFromField(cursor, CmpdDbManager.LocalID_FieldName, ChemDraw.CDFormat.kCDFormatInChI);
+                if (generated)
+                    cursor.SetValue(CmpdDbManager.StructureSource_FieldName, CmpdDbManager.StructureSource_InChi);
             }
 
             if (GenerateStructureFromSmiles)
             {
-                GenerateStructureFromField(cursor, CmpdDbManager.Smiles_FieldName, ChemDraw.CDFormat.kCDFormatSMILES);
-                cursor.SetValue(CmpdDbManager.StructureSource_FieldName, CmpdDbManager.StructureSource_SMILES);
+                var generated = GenerateStructureFromField(cursor, CmpdDbManager.Smiles_FieldName, ChemDraw.CDFormat.kCDFormatSMILES);
+                if (generated)
+                    cursor.SetValue(CmpdDbManager.StructureSource_FieldName, CmpdDbManager.StructureSource_SMILES);
             }
 
             if (FillNoStructure)
@@ -353,21 +355,34 @@ namespace Ujihara.Chemistry.CfxUtility
             }
         }
 
-        private void GenerateStructureFromField(StructureDb.Recordset cursor, string fieldName, ChemDraw.CDFormat cdFormat)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cursor">Cursor of recordset to write.</param>
+        /// <param name="fieldName">Field name to generate to structure.</param>
+        /// <param name="cdFormat">Format of the value of filed.</param>
+        /// <returns><see langword="true"/> if structure is generated from the value of <paramref name="fieldName"/>.</returns>
+        private bool GenerateStructureFromField(StructureDb.Recordset cursor, string fieldName, ChemDraw.CDFormat cdFormat)
         {
-            var molid = cursor.GetRawValue(CfxManager.FieldName_MolID) as int?;
-            if (molid != null)
-                return;
-
-            var fieldValue = cursor.GetValue(fieldName) as string;
-            if (fieldValue != null && fieldValue.Length > 0)
+            if ((cursor.GetRawValue(CfxManager.FieldName_MolID) as int?) == null 
+             && cursor.GetValue(fieldName) is string fieldValue 
+             && fieldValue.Length > 0)
             {
                 using (var tempTxt = new TempFile(".txt"))
                 using (var tempCdx = new TempFile(".cdx"))
                 {
                     using (var ts = new StreamWriter(tempTxt.Path))
                     {
-                        ts.Write(fieldValue);
+                        var theText = fieldValue;
+                        switch (cdFormat)
+                        {
+                            case ChemDraw.CDFormat.kCDFormatSMILES:
+                                // Strip CXSMILES (ie, extended SMILES by ChemAxon) info.
+                                theText = theText.Split(new[] { ' ', '\t' })[0];
+                                break;
+                        }
+
+                        ts.Write(theText);
                     }
                     object missing = Type.Missing;
                     object format = cdFormat;
@@ -381,17 +396,29 @@ namespace Ujihara.Chemistry.CfxUtility
                             doc.SaveAs(ref filename, ref formatCdx, ref missing, ref missing, ref missing);
 
                             cursor.SetValue(CfxManager.FieldName_MolID, tempCdx.Path);
+
+                            return true;
                         }
                     }
                     finally
                     {
-                        doc.Close(ref missing, ref missing);
-                        Utility.ReleaseComObject(doc);
+                        if (doc != null)
+                        {
+                            try
+                            {
+                                doc.Close(ref missing, ref missing);
+                                Utility.ReleaseComObject(doc);
+                            }
+                            catch (Exception)
+                            {
+                            }
+                        }
                     }
                 }
             }
+            return false;
         }
-
+    
         class StructureDataAndSource
         {
             public StructureDataAndSource(StructureData structure, string source)
@@ -475,6 +502,7 @@ namespace Ujihara.Chemistry.CfxUtility
 
         public void Run()
         {
+            ResetProgress();
             using (var db = new ChemFinderStructureDb(this.CfxFilePath, FileAccess.ReadWrite))
             {
                 if (LocalDb != null)
@@ -487,15 +515,18 @@ namespace Ujihara.Chemistry.CfxUtility
 
                     if (CleanupStructureFlag)
                         CleanStructure(cursor);
-                    
+
                     if (GenerateSmilesFlag)
                         GenerateSmiles(cursor);
-                    
+
                     NameLocalID(cursor);
 
                     cursor.MoveNext();
+
+                    InclProgressCount();
                 }
             }
+            ResetProgress();
         }
 
         private void CleanStructure(StructureDb.Recordset cursor)
@@ -513,7 +544,7 @@ namespace Ujihara.Chemistry.CfxUtility
                     var original = Path.Combine(dir.Directory.FullName, "original.cdx");
                     var cleanedup = Path.Combine(dir.Directory.FullName, "cleanedup.cdx");
 
-                    ChemDraw.Document doc = null;
+                    ChemDraw.DocumentWin doc = null;
                     ChemDraw.Objects objs = null;
                     try
                     {
@@ -624,6 +655,27 @@ namespace Ujihara.Chemistry.CfxUtility
 
             if (indexArgs < args.Length)
                 throw new ApplicationException("Only one input file is supported");
+        }
+
+        int curr_number = 0;
+
+        public void InclProgressCount()
+        {
+            curr_number++;
+        }
+
+        private void ResetProgress()
+        {
+            curr_number = 0;
+        }
+
+        public string GetReport()
+        {
+            if (curr_number != 0)
+            {
+                return curr_number.ToString();
+            }
+            return "";
         }
     }
 

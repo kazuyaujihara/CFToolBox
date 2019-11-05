@@ -1,15 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
-using System.Runtime.InteropServices;
-using MSWord = Microsoft.Office.Interop.Word;
-using System.Data.Common;
-using System.Data;
-using ChemFinder = ChemFinder16;
-using MolServer = MolServer16;
+using System.Text;
 using Ujihara.Chemistry.IO;
+using MolServer = MolServer19;
 
 namespace Ujihara.Chemistry.MergeSF
 {
@@ -85,12 +79,19 @@ namespace Ujihara.Chemistry.MergeSF
             set { _CfxFiles = value; }
         }
 
-         IList<string> _ImageFiles = new List<string>();
-         public IList<string> ImageFiles
-         {
-             get { return _ImageFiles; }
-             set { _ImageFiles = value; }
-         }
+        IList<string> _SmilesListFiles = new List<string>();
+        public IList<string> SmilesListFiles
+        {
+            get { return _SmilesListFiles; }
+            set { _SmilesListFiles = value; }
+        }
+
+        IList<string> _ImageFiles = new List<string>();
+        public IList<string> ImageFiles
+        {
+            get { return _ImageFiles; }
+            set { _ImageFiles = value; }
+        }
 
         private string _CfxOutput = null;
         private string CfxOutput
@@ -148,7 +149,6 @@ namespace Ujihara.Chemistry.MergeSF
                             f.CopyTo(dest, true);
                         }
                     }
-
                 }
             }
         }
@@ -248,6 +248,7 @@ namespace Ujihara.Chemistry.MergeSF
                 db = cfx;
                 LoadSDFs(this.SDFiles);
                 LoadSciFinderReferencesFiles(this.ReferenceFiles);
+                LoadSmilesFromList(this.SmilesListFiles);
                 LoadMoleculesFromList(this.ListFiles);
                 LoadSubstancesFromCSV(this.CSVFiles);
                 LoadCAOnlineFiles(this.CasOnlineFiles);
@@ -744,7 +745,7 @@ namespace Ujihara.Chemistry.MergeSF
             SubstanceInfo entry,
             string cmpdfile, string structsource)
         {
-            if (!(entry.CAIndexName == null && entry.MolecularFormula == null && entry.Bitmap == null && entry.Name == null && entry.OtherNames == null))
+            if (!(entry.CAIndexName == null && entry.MolecularFormula == null && entry.Bitmap == null && entry.Name == null && entry.OtherNames == null && entry.Smiles == null))
             {
                 rstMol.Filter = CmpdDbManager.CASRN_FieldName + "= '" + entry.CASRN + "'";
                 IGetSetValue recCmp;
@@ -762,6 +763,7 @@ namespace Ujihara.Chemistry.MergeSF
                 SetValueIfNotEmpty(recCmp, CmpdDbManager.Copyright_FieldName, entry.Copyright);
                 SetValueIfNotEmpty(recCmp, CmpdDbManager.MolID_FieldName, cmpdfile);
                 SetValueIfNotEmpty(recCmp, CmpdDbManager.StructureSource_FieldName, structsource);
+                SetValueIfNotEmpty(recCmp, CmpdDbManager.Smiles_FieldName, entry.Smiles);
 
                 if (recCmp is StructureDb.Record)
                     rstMol.Add((StructureDb.Record)recCmp);
@@ -793,6 +795,42 @@ namespace Ujihara.Chemistry.MergeSF
             }
         }
 
+        private void LoadSmilesFromList(IEnumerable<string> filenames)
+        {
+            using (var rstDocuments = db.ObtainRecordset(CmpdDbManager.Documents_TableName))
+            using (var rstSubstances = db.ObtainRecordset(CmpdDbManager.Substances_TableName))
+            using (var rstMolTable = db.ObtainRecordset(CmpdDbManager.MolTable_TableName))
+            {
+                foreach (var filename in filenames)
+                {
+                    var theFileName = Path.GetFileName(filename);
+                    SetFileName(theFileName);
+
+                    var refInfo = new ReferenceInfo();
+                    var pseudoAN = "~" + theFileName.GetHashCode().ToString("X8");
+                    refInfo.AccessionNumber = pseudoAN;
+                    refInfo.DocumentType = CmpdDbManager.DocumentType_Unknown;
+                    refInfo.Source = theFileName;
+                    if (refInfo.AccessionNumber != null)
+                        RegisterReferenceInfo(rstDocuments, refInfo);
+
+                    var extractor = new SmilesListExtractor(filename);
+                    var base_id = CmpdDbManager.GeneratePseudoCASRNBase();
+                    int n = 0;
+                    foreach (var entry in extractor.GetSubstancesInfo())
+                    {
+                        if (entry.CASRN == null)
+                            entry.CASRN = CmpdDbManager.GeneratePseudoCASRN(base_id, n++);
+                        RegisterSubstanceToMolTable(rstMolTable, entry);
+                        RegisterSubstanceInfo(rstSubstances, refInfo, entry);
+
+                        IncProgressCount();
+                    }
+                }
+                ResetProgress();
+            }
+        }
+
         private void LoadMoleculesFromList(IEnumerable<string> filenames)
         {
             using (var rstDocuments = db.ObtainRecordset(CmpdDbManager.Documents_TableName))
@@ -813,14 +851,15 @@ namespace Ujihara.Chemistry.MergeSF
                         RegisterReferenceInfo(rstDocuments, refInfo);
 
                     var extractor = new ListExtractor(filename);
+                    var base_id = CmpdDbManager.GeneratePseudoCASRNBase();
+                    int n = 0;
                     foreach (var entry in extractor.GetSubstancesInfo())
                     {
                         if (entry.CASRN == null)
-                                entry.CASRN = CmpdDbManager.GeneratePseudoCASRN();
+                                entry.CASRN = CmpdDbManager.GeneratePseudoCASRN(base_id, n++);
                         RegisterSubstanceToMolTable(rstMolTable, entry);
                         RegisterSubstanceInfo(rstSubstances, refInfo, entry);
                     }
-                    
                 }
                 ResetProgress();
             }
@@ -878,7 +917,8 @@ namespace Ujihara.Chemistry.MergeSF
                         case "-I":
                             program.LoadSubstanceImageFlag = true;
                             break;
-                        case "-help":
+                        case "-?":
+                        case "--help":
                             throw new ApplicationException(
                                   "usege: MergeSF [option]... ([+]filename)\n"
                                 + "-o file-name\tSpecify output CFX file name\n"
@@ -914,6 +954,10 @@ namespace Ujihara.Chemistry.MergeSF
                     break;
                 case ".sdf":
                     this.SDFiles.Add(filename);
+                    break;
+                case ".smi":
+                case ".rsmi":
+                    this.SmilesListFiles.Add(filename);
                     break;
                 case ".txt":
                 case ".csv":

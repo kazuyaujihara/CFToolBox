@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using ChemFinder = ChemFinder16;
+using ChemFinder = ChemFinder19;
 
 namespace Ujihara.Chemistry
 {

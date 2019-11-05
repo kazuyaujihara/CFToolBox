@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using MolServer = MolServer16;
+using MolServer = MolServer19;
 using System.Linq;
 
 namespace Ujihara.Chemistry
@@ -22,7 +22,7 @@ namespace Ujihara.Chemistry
             {
             }
 
-            public override StructureDb.Recordset Search(string fieldName, MolServer16.Molecule m)
+            public override StructureDb.Recordset Search(string fieldName, MolServer19.Molecule m)
             {
                 return null;
             }

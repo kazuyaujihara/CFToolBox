@@ -1,22 +1,11 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using Microsoft.Win32;
-using System.Threading;
-using System.Diagnostics;
 using System.ComponentModel;
 using System.IO;
-using System.Xml.Serialization;
-using CfxUtilityGUI.Properties;
+using System.Linq;
+using System.Threading;
+using System.Windows;
 using Ujihara.Chemistry.MergeSF;
 
 
@@ -54,6 +43,7 @@ namespace CfxUtilityGUI
         private const string E_cfx = "ChemFinder files (*.cfx)|*.cfx";
         private const string E_csv = "CSV files (*.csv;*.txt)|:.csv;*.txt";
         private const string E_lst = "Lists (*.lst)|*.lst";
+        private const string E_smi = "SMILES Lists (*.smi;*.rsmi)|*.smi;*.rsmi";
         private const string E_image = "Images (*.gif;*.png;*.jpg;*.tif;*.tiff)|*.gif;*.png;*.jpg;*.tif;*.tiff";
 
         private void AppendFromCasOnlineItem_Click(object sender, RoutedEventArgs e)
@@ -134,7 +124,32 @@ namespace CfxUtilityGUI
                     var prog = CreateProgram();
                     prog.AppendFlag = append;
                     prog.OutputPath = targetPath;
-                    prog.InputPaths = sourcePaths;
+                    prog.ListFiles = sourcePaths.ToList();
+                    return prog;
+                }, append);
+        }
+
+        private void AppendFromSmilesLST_Click(object sender, RoutedEventArgs e)
+        {
+            CreateFromSmilesLST_Click(sender, e, true);
+        }
+
+        private void CreateFromSmilesLST_Click(object sender, RoutedEventArgs e)
+        {
+            CreateFromSmilesLST_Click(sender, e, false);
+        }
+
+        private void CreateFromSmilesLST_Click(object sender, RoutedEventArgs e, bool append)
+        {
+            AA_Click(sender, e,
+                E_smi + "|" + E_all,
+                append ? null : E_cfx + "|" + E_all, ".cfx",
+                (sourcePaths, targetPath) =>
+                {
+                    var prog = CreateProgram();
+                    prog.AppendFlag = append;
+                    prog.OutputPath = targetPath;
+                    prog.SmilesListFiles = sourcePaths.ToList();
                     return prog;
                 }, append);
         }
@@ -325,16 +340,21 @@ namespace CfxUtilityGUI
                             {
                                 action.Run();
                             }
+#if true
                             catch (Exception ee)
                             {
                                 mes = ee.Message;
                             }
-                            ctx.Post(
-                                state =>
-                                {
-                                    item.TaskID = null;
-                                    item.Progress = mes;
-                                }, null);
+#endif
+                            finally
+                            {
+                                ctx.Post(
+                                    state =>
+                                    {
+                                        item.TaskID = null;
+                                        item.Progress = mes;
+                                    }, null);
+                            }
                         }));
                 item.Thread = thread;
                 item.Action = action;

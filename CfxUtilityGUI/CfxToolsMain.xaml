@@ -14,25 +14,27 @@
                 <MenuItem Header="Create from ..." >
                     <MenuItem Name="CreateFromCasOnlineItem" Header="CAS ONLINE" Click="CreateFromCasOnlineItem_Click" />
                     <MenuItem Name="CreateFromSciFinderItems" Header="SciFinder's RTF and SDF" Click="CreateFromSciFinderItem_Click" />
-                    <MenuItem Name="CreateFromLST" Header="List" Click="CreateFromLST_Click" />
+                    <MenuItem Name="CreateFromLST" Header="Compound name list" Click="CreateFromLST_Click" />
+                    <MenuItem Name="CreateFromSmilesLST" Header="SMILES list" Click="CreateFromSmilesLST_Click" />
                     <MenuItem Name="CreateFromCFX" Header="ChemFinder" Click="CreateFromCFX_Click" />
-                    <MenuItem Name="CreateFromImage" Header="Image" Click="CreateFromImage_Click" />
+                    <!--"<MenuItem Name="CreateFromImage" Header="Image" Click="CreateFromImage_Click" />-->
                 </MenuItem>
                 <Separator />
                 <MenuItem Header="Append ..." >
                     <MenuItem Name="AppendFromCasOnlineItem" Header="CAS ONLINE" Click="AppendFromCasOnlineItem_Click" />
                     <MenuItem Name="AppendFromSciFinderItems" Header="SciFinder's RTF and SDF" Click="AppendFromSciFinderItem_Click" />
-                    <MenuItem Name="AppendFromLST" Header="List" Click="AppendFromLST_Click" />
+                    <MenuItem Name="AppendFromLST" Header="Compound name list" Click="AppendFromLST_Click" />
+                    <MenuItem Name="AppendFromSmilesLST" Header="SMILES list" Click="AppendFromSmilesLST_Click" />
                     <MenuItem Name="AppendFromCFX" Header="ChemFinder" Click="AppendFromCFX_Click" />
-                    <MenuItem Name="AppendFromImage" Header="Image" Click="AppendFromImage_Click" />
+                    <!--<MenuItem Name="AppendFromImage" Header="Image" Click="AppendFromImage_Click" />-->
                 </MenuItem>
                 <Separator />
                 <MenuItem Header="_Manipurate..." >
-                    <MenuItem Name="AssignLocalCodeNumber" Header="Assign Local Nr" Click="AssignLocalCodeNumber_Click" />
+                    <!--<MenuItem Name="AssignLocalCodeNumber" Header="Assign Local Nr" Click="AssignLocalCodeNumber_Click" />-->
                     <MenuItem Name="GenerateStructureFromName" Header="Generate Structure from Name" Click="GenerateStructureFromName_Click" />
-                    <MenuItem Name="GenerateStructureFromImage" Header="Generate Structure from Image" Click="GenerateStructureFromImage_Click" />
+                    <!--<MenuItem Name="GenerateStructureFromImage" Header="Generate Structure from Image" Click="GenerateStructureFromImage_Click" />-->
                     <MenuItem Name="GenerateStructureFromSmiles" Header="Generate Structure from SMILES" Click="GenerateSructureFromSmiles_Click" />
-                    <MenuItem Name="GenerateStructureFromInChi" Header="Generate Structure from InChi" Click="GenerateSructureFromInChi_Click" />
+                    <MenuItem Name="GenerateStructureFromInChI" Header="Generate Structure from InChI" Click="GenerateSructureFromInChi_Click" />
                     <MenuItem Name="GenerateSmilesFromStructure" Header="Generate SMILES from Structure" Click="GenerateSmiles_Click" />
                     <MenuItem Name="CleanupStructure" Header="Clean up Structure" Click="CleanupStructure_Click" />
                     <MenuItem Name="ScaffordStructure" Header="Scafford Structure" Click="ScaffordStructure_Click" />

@@ -1,17 +1,14 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Packaging;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.IO;
-using MSWord = Microsoft.Office.Interop.Word;
-using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
-using Ujihara.Chemistry.MSOffice;
 using Ujihara.Chemistry.IO;
-using OX = DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
-using W = DocumentFormat.OpenXml.Wordprocessing;
+using Ujihara.Chemistry.MSOffice;
 using A = DocumentFormat.OpenXml.Drawing;
+using W = DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Ujihara.Chemistry.MergeSF
 {

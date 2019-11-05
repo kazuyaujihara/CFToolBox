@@ -26,27 +26,46 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;ChemOfficeVersion16</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;ChemOfficeVersion16</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CambridgeSoft.ChemScript16, Version=16.0.0.0, Culture=neutral, PublicKeyToken=65bb58ea6feffb0a, processorArchitecture=x86">
+    <Reference Include="CambridgeSoft.ChemScript19, Version=19.0.0.0, Culture=neutral, PublicKeyToken=65bb58ea6feffb0a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\PerkinElmerInformatics\ChemOffice2016\ChemScript\Lib\Net\CambridgeSoft.ChemScript16.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\PerkinElmerInformatics\ChemOffice2019\ChemScript\Lib\Net\CambridgeSoft.ChemScript19.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -70,6 +89,15 @@
     <Compile Include="StructureDb.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ujihara.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ujihara.Chemistry\Ujihara.Chemistry.csproj">
+      <Project>{244f9c04-9937-4096-b0d0-b8a2d2bb7988}</Project>
+      <Name>Ujihara.Chemistry</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <COMReference Include="ADODB">
       <Guid>{B691E011-1797-432E-907A-4D8C69339129}</Guid>
       <VersionMajor>6</VersionMajor>
@@ -77,6 +105,7 @@
       <Lcid>0</Lcid>
       <WrapperTool>tlbimp</WrapperTool>
       <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
     <COMReference Include="ADOX">
       <Guid>{00000600-0000-0010-8000-00AA006D2EA4}</Guid>
@@ -85,42 +114,26 @@
       <Lcid>0</Lcid>
       <WrapperTool>tlbimp</WrapperTool>
       <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
-    <COMReference Include="ChemFinder16">
-      <Guid>{D32104DE-A85A-41E0-99B7-D7E599283EA4}</Guid>
-      <VersionMajor>16</VersionMajor>
+    <COMReference Include="ChemFinder19">
+      <Guid>{817FC813-C269-4F16-9364-00272959FBC0}</Guid>
+      <VersionMajor>19</VersionMajor>
       <VersionMinor>0</VersionMinor>
       <Lcid>0</Lcid>
       <WrapperTool>tlbimp</WrapperTool>
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
-    <COMReference Include="MolServer16">
-      <Guid>{D0A0254E-03BC-49DF-908E-FC5418A18D46}</Guid>
-      <VersionMajor>16</VersionMajor>
+    <COMReference Include="MolServer19">
+      <Guid>{EF1CE942-C712-4C26-B564-3C348EAD3323}</Guid>
+      <VersionMajor>19</VersionMajor>
       <VersionMinor>0</VersionMinor>
       <Lcid>0</Lcid>
       <WrapperTool>tlbimp</WrapperTool>
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
-    <COMReference Include="stdole">
-      <Guid>{00020430-0000-0000-C000-000000000046}</Guid>
-      <VersionMajor>2</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-    </COMReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ujihara.snk" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Ujihara.Chemistry\Ujihara.Chemistry.csproj">
-      <Project>{244f9c04-9937-4096-b0d0-b8a2d2bb7988}</Project>
-      <Name>Ujihara.Chemistry</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

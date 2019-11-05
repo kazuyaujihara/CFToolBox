@@ -3,11 +3,11 @@ using System.IO;
 
 namespace Ujihara.Chemistry.MergeSF
 {
-    public class ListExtractor
+    public class SmilesListExtractor
     {
         public string FileName { get; private set; }
 
-        public ListExtractor(string filename)
+        public SmilesListExtractor(string filename)
         {
             this.FileName = filename;
         }
@@ -28,7 +28,7 @@ namespace Ujihara.Chemistry.MergeSF
                         continue;
 
                     var info = new SubstanceInfo();
-                    info.Name = line;
+                    info.Smiles = line;
                     info.Order = nOderInDoc++;
                     yield return info;
                 }

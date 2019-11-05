@@ -4,12 +4,12 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
 
-[assembly: AssemblyTitle("CfxUtilityGUI")]
+[assembly: AssemblyTitle("CF ToolBox GUI")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Kazuya Ujihara")]
-[assembly: AssemblyProduct("CfxUtility")]
-[assembly: AssemblyCopyright("Copyright © Kazuya Ujihara 2015-2018. All rights reserved.")]
+[assembly: AssemblyProduct("CF ToolBox")]
+[assembly: AssemblyCopyright("Copyright © Kazuya Ujihara 2015-2019. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]

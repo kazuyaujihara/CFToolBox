@@ -7,10 +7,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Kazuya Ujihara")]
 [assembly: AssemblyProduct("Ujihara.Chemistry")]
-[assembly: AssemblyCopyright("Copyright © Kazuya Ujihara 2014-2015")]
+[assembly: AssemblyCopyright("Copyright © Kazuya Ujihara 2014-2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 [assembly: Guid("a4926715-538f-4426-a5a5-ef049274a7cd")]
-[assembly: AssemblyVersion("1.3.*")]
-
+[assembly: AssemblyVersion("1.7.0.0")]

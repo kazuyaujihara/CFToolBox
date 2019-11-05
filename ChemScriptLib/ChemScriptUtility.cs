@@ -1,6 +1,4 @@
-﻿#if ChemOfficeVersion16
-using CambridgeSoft.ChemScript16;
-#endif
+﻿using CambridgeSoft.ChemScript19;
 
 namespace Ujihara.Chemistry
 {

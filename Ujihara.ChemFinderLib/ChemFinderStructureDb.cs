@@ -1,11 +1,11 @@
-﻿using CambridgeSoft.ChemScript16;
+﻿using CambridgeSoft.ChemScript19;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using Ujihara.Chemistry.IO;
-using MolServer = MolServer16;
+using MolServer = MolServer19;
 
 namespace Ujihara.Chemistry
 {
@@ -51,7 +51,10 @@ namespace Ujihara.Chemistry
 
         protected string OleDbConnectionString
         {
-            get { return "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + RecordSource; }
+            get
+            {
+                return "Provider=" + CfxManager.DefaultProviderName + ";Data Source=" + RecordSource;
+            }
         }
         
         // We consider ADODB is better than System.Data at this time becuase table can have no key field.
@@ -167,6 +170,7 @@ namespace Ujihara.Chemistry
         {
             Utility.CheckSQLName(tableName);
 
+            // FIXME: need safer code
             ExecuteNonQuery("CREATE TABLE [" + tableName + "]");
         }
 
@@ -194,6 +198,7 @@ namespace Ujihara.Chemistry
                     try
                     {
                         cmd.ActiveConnection = this.Connection;
+                        // FIXME: need safer code
                         cmd.CommandText = "ALTER TABLE "
                             + "[" + tableName + "] "
                             + "ADD [" + name + "] " + type;
@@ -543,7 +548,7 @@ namespace Ujihara.Chemistry
             }
         }
 
-        private Dictionary<string, MolServer.Hitlist> FieldNameToDomains = new Dictionary<string, MolServer16.Hitlist>();
+        private Dictionary<string, MolServer.Hitlist> FieldNameToDomains = new Dictionary<string, MolServer19.Hitlist>();
 
         MolServer.Hitlist GetMolIDsInThisDb(string fieldName)
         {
@@ -560,7 +565,7 @@ namespace Ujihara.Chemistry
                 try
                 {
                     cmd.ActiveConnection = this.Connection;
-                    cmd.CommandText = "SELECT " + fieldName + " FROM " + this.TableName;
+                    cmd.CommandText = "SELECT " + fieldName + " FROM " + this.TableName;    // FIXME: need safer code
                     cmd.CommandType = ADODB.CommandTypeEnum.adCmdText;
                     cmd.Prepared = true;
 
