@@ -169,8 +169,7 @@ namespace Ujihara.Chemistry.MergeSF
             {
                 var pi_box = man.AddField(CmpdDbManager.Abstract_FieldName);
                 var ltrb = pi_box.Attribute(CfxManager.AttributeName_rect).Value;
-                int l, t, r, b;
-                CfxManager.GetLTRBAttributeValue(ltrb, out l, out t, out r, out b);
+                CfxManager.GetLTRBAttributeValue(ltrb, out int l, out int t, out int r, out int b);
                 b = (b - t) * 4 + t;
                 ltrb = CfxManager.CreateLTRBAttributeValue(l, t, r, b);
                 pi_box.SetAttributeValue(CfxManager.AttributeName_rect, ltrb);

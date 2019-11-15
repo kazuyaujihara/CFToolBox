@@ -5,7 +5,7 @@ using Ujihara.Chemistry.IO;
 
 namespace Ujihara.Chemistry.MergeSF
 {
-    internal class SciFinderSubstancesCSVExtractor
+    internal class SubstancesCSVExtractor
     {
         private const string Registry_Number = "Registry Number";
         private const string CA_Index_Name = "CA Index Name";
@@ -17,7 +17,7 @@ namespace Ujihara.Chemistry.MergeSF
         public string FileName { get; private set; }
         private static object missing = Type.Missing;
 
-        public SciFinderSubstancesCSVExtractor(string filename)
+        public SubstancesCSVExtractor(string filename)
         {
             this.FileName = filename;
         }

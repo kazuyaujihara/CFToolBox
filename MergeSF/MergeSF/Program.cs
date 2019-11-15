@@ -249,7 +249,7 @@ namespace Ujihara.Chemistry.MergeSF
                 LoadSDFs(this.SDFiles);
                 LoadSciFinderReferencesFiles(this.ReferenceFiles);
                 LoadSmilesFromList(this.SmilesListFiles);
-                LoadMoleculesFromList(this.ListFiles);
+                LoadMoleculesFromCompoundNameList(this.ListFiles);
                 LoadSubstancesFromCSV(this.CSVFiles);
                 LoadCAOnlineFiles(this.CasOnlineFiles);
                 LoadCfxFiles(this.CfxFiles);
@@ -579,7 +579,7 @@ namespace Ujihara.Chemistry.MergeSF
                     var theFileName = Path.GetFileName(filename);
                     SetFileName(theFileName);
 
-                    var extractor = new SciFinderSubstancesCSVExtractor(filename);
+                    var extractor = new SubstancesCSVExtractor(filename);
                     foreach (var info in extractor.GetSubstancesInfo())
                     {
                         if (info.CASRN == null)
@@ -831,7 +831,7 @@ namespace Ujihara.Chemistry.MergeSF
             }
         }
 
-        private void LoadMoleculesFromList(IEnumerable<string> filenames)
+        private void LoadMoleculesFromCompoundNameList(IEnumerable<string> filenames)
         {
             using (var rstDocuments = db.ObtainRecordset(CmpdDbManager.Documents_TableName))
             using (var rstSubstances = db.ObtainRecordset(CmpdDbManager.Substances_TableName))

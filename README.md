@@ -4,7 +4,7 @@ This application imports SciFiner's output (like RTF, SDF, etc) and output as Ch
 
 ## Requirements
 
-- Windows
+- Microsoft Windows OS
 - Microsoft Word
 - ChemOffice/ChemDraw Professional 2019 because the following application is running behide this application.
 	- ChemDraw
@@ -45,6 +45,6 @@ This application imports SciFiner's output (like RTF, SDF, etc) and output as Ch
 2. Select ChemFinder database file (ie, `.cfx` file).
 3. Select the newly created line.
 4. Menu > *Build* > *Manipulate ...*.
-5. Select `*Generate Structre from* *name/SMILES/InChI*`/`Generate SMILES from Structure`/`Clean up Structure`/`Scafford Structure`
+5. Select *Generate structre from name*, *Generate structre from  SMILES*, *Generate structre from InChI*, *Generate SMILES from Structure*, *Clean up Structure*, or *Scafford Structure*.
 6. Wait until showing finished.
-- The structure used in `Scafford Structure` is specified in Menu > *File* > *Settings ...* > *Scaford Structure file*.
+- The structure used in *Scafford Structure* is specified in Menu > *File* > *Settings ...* > *Scaford Structure file*.
